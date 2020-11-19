@@ -18,7 +18,7 @@ namespace GameApi.Controllers
     SqlConnectionStringBuilder stringBuilder = new SqlConnectionStringBuilder();
     IConfiguration configuration;
     string connectionString;
-    Gameresults Game2 = new Gameresults();
+    public Gameresults Game2 = new Gameresults();
 
     public GameController(IConfiguration iconfig){
             this.configuration = iconfig;
@@ -29,18 +29,6 @@ namespace GameApi.Controllers
             this.connectionString = this.stringBuilder.ConnectionString;
         }
     
-     [HttpPost]
-      public Gameresults PlayRequest(Player Poop){
-          //set player results in game
-          this.Game2.SetPlayerChoice(Poop.PlayerChoice, Poop.UserName);
-          //set CPU choice
-          this.Game2.CpuRandChoice();
-          //commit results
-          this.Game2.CommitResult(Game2.PlayerChoice, Game2.CpuChoice);
-          //this.Game2.CommitResult(Game2.PlayerChoice,Game2.CpuChoice);
-
-          return Game2;
-      } 
 
       [HttpPost("rounds")]
       public List<Gameresults> PlayRequests(Player[] Poop){
@@ -50,7 +38,7 @@ namespace GameApi.Controllers
           foreach (var Player in Poop)
           {
             this.Game2 = new Gameresults();
-            this.Game2.SetPlayerChoice(Poop[i].PlayerChoice, Poop[i].UserName);
+            this.Game2.SetPlayerChoice(Poop[i].PlayerChoice, Poop[i].UserName, Poop[i].CurrentRound, Poop[i].MaxRounds);
             this.Game2.CpuRandChoice();
             this.Game2.CommitResult(Game2.PlayerChoice, Game2.CpuChoice);
             i++;

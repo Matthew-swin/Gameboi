@@ -15,15 +15,23 @@ namespace GameApi.models
         public int CpuScore;
         
 
+        public void setMaxRound(int Round){
+            this.MaxRounds = Round;
+
+        }
         public void setCurrentRound(int Round){
             this.CurrentRound = Round;
 
         }
         //Set the playerChoice
-        public void SetPlayerChoice(string playerChooseth, string UserName)
+        public void SetPlayerChoice(string pChooseth, string uName, int cRound, int mRounds)
         {
-            this.PlayerChoice = playerChooseth;
-            this.UserName = UserName;
+            this.PlayerChoice = pChooseth;
+            this.UserName = uName;
+            this.CurrentRound = cRound;
+            this.MaxRounds = mRounds;
+            
+
         }
         public void CpuRandChoice()
         {
