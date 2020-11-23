@@ -45,13 +45,46 @@ namespace GameApi.Controllers
               //dunno how to do it here
             resulty.Add(Game2);
           }
+          //save final result
           this.Game2.SetFinalResult();
-          //sql commands save time method, save playername method, save game method, save rounds method (with all send in datie)
+          //sql commands save time method, save Game, save Turn (with all send in datie)
+          this.Game2.AddGameToDb(Poop[i].MaxRounds, this.connectionString,datie);
           return resulty;
       }
-      //  [HttpGet("leaderBoard")]
-      //  public List<list> 
-      //  list add 5 lines of info
+      [HttpGet("leaderBoard")]
+      public List<LeaderBoardResponse> getLeaderboardData(string connectionString)
+        {
+
+            List<LeaderBoardResponse> customers = new List<LeaderBoardResponse>();
+
+            SqlConnection conn = new SqlConnection(connectionString);
+
+            string queryString = "Select * From LEADERBOARD";
+
+            SqlCommand command = new SqlCommand(queryString, conn);
+            conn.Open();
+
+            string result = "";
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    result += reader[0] + " | " + reader[1] + reader[2] + reader[3] + reader[4] + "\n";
+
+                    customers.Add(
+                        new LeaderBoardResponse()
+                        {
+                            username = reader[0].ToString(),
+                            winRatio = Math.Round(((double)reader[1]), 2),
+                            gamesPlayed = (int)reader[2],
+                            roundsPlayed = (int)reader[3],
+                            last5Games = reader[4].ToString()
+                        });
+                }
+            }
+
+            return customers;
+        }
       
     }
 }

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Microsoft.Data.SqlClient;
 
 namespace GameApi.models
 {
@@ -11,8 +13,8 @@ namespace GameApi.models
         public string UserName {get; set;}
         public int MaxRounds {get; set;}
         public int CurrentRound {get; set;}
-        public int PlayerScore;
-        public int CpuScore;
+        public int PlayerScore = 0;
+        public int CpuScore = 0;
         
 
         public void setMaxRound(int Round){
@@ -77,6 +79,29 @@ namespace GameApi.models
             else{
                 this.GameResult = "Draw";
             }
+        }
+
+        public string AddGameToDb(int gamemaxrounds, string connectionString, DateTime cdt)
+        {
+
+            SqlConnection conn = new SqlConnection(connectionString);
+
+            
+            string queryString = "INSERT INTO GAME VALUES ('" + this.PlayerChoice + "','" + cdt.ToString("MM/dd/yyyy hh:mm:ss") + "'," + gamemaxrounds + ",'" + this.GameResult[0] + "')";
+
+            SqlCommand command = new SqlCommand(queryString, conn);
+            conn.Open();
+
+            try
+            {
+                var result = command.ExecuteNonQuery();
+                return result.ToString();
+            }
+            catch (SqlException se)
+            {
+                return "user already exists " + se.Message;
+            }
+
         }
 
     }
