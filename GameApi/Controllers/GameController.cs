@@ -42,48 +42,43 @@ namespace GameApi.Controllers
             this.Game2.CpuRandChoice();
             this.Game2.CommitResult(Game2.PlayerChoice, Game2.CpuChoice);
             i++;
-              //dunno how to do it here
             resulty.Add(Game2);
           }
           //save final result
           this.Game2.SetFinalResult();
           //sql commands save time method, save Game, save Turn (with all send in datie)
-          this.Game2.AddGameToDb(Poop[i].MaxRounds, this.connectionString,datie);
+        //   this.Game2.AddGameToDb(Poop[i-1].MaxRounds, this.connectionString,datie);          
           return resulty;
       }
       [HttpGet("leaderBoard")]
-      public List<LeaderBoardResponse> getLeaderboardData(string connectionString)
+      public List<LeaderBoardResponse> getLeaderboardData()
         {
 
-            List<LeaderBoardResponse> customers = new List<LeaderBoardResponse>();
-
+            List<LeaderBoardResponse> weewee = new List<LeaderBoardResponse>();
             SqlConnection conn = new SqlConnection(connectionString);
-
             string queryString = "Select * From LEADERBOARD";
-
             SqlCommand command = new SqlCommand(queryString, conn);
+            
             conn.Open();
-
             string result = "";
             using (SqlDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    result += reader[0] + " | " + reader[1] + reader[2] + reader[3] + reader[4] + "\n";
+                    result += reader[0] + " | " + reader[1] + reader[2] + reader[3] + "\n";
 
-                    customers.Add(
+                    weewee.Add(
                         new LeaderBoardResponse()
                         {
                             username = reader[0].ToString(),
                             winRatio = Math.Round(((double)reader[1]), 2),
                             gamesPlayed = (int)reader[2],
-                            roundsPlayed = (int)reader[3],
-                            last5Games = reader[4].ToString()
+                            last5Games = reader[3].ToString()
                         });
                 }
             }
 
-            return customers;
+            return weewee;
         }
       
     }

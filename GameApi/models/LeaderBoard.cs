@@ -9,7 +9,6 @@ namespace GameApi.models
         public string username { get; set; }
         public double winRatio { get; set; }
         public int gamesPlayed { get; set; }
-        public int roundsPlayed { get; set; }
         public string last5Games { get; set; }
   
 
